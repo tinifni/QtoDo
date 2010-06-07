@@ -1,5 +1,15 @@
-#content
-  %form{:action => "/upload", :method => "post", :enctype => "multipart/form-data"}
-    %input{:type => "file", :name => "file"}
-    %input{:type => "submit", :value => "Bang!"}
-  %a{:href => '/'} Cancel
+!!!
+%html
+  %head
+    %title Queue to Do
+    %link{:rel => 'stylesheet', :type => 'text/css', :href => '/stylesheet.css'}
+  %body
+    #content
+      %a{:href => '/'} Home
+      %a{:href => '/edit'} Edit
+      Upload File
+      %br/
+      %form{:action => "/upload", :method => "post", :enctype => "multipart/form-data"}
+        %input{:type => "file", :name => "file"}
+        %input{:type => "submit", :value => "Bang!"}
+      %a{:href => '/'} Cancel

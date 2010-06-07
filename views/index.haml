@@ -5,57 +5,40 @@
     %link{:rel => 'stylesheet', :type => 'text/css', :href => '/stylesheet.css'}
   %body
     #content
+      Home
+      %a{:href => '/edit'} Edit
       %a{:href => '/upload'} Upload File
       %br/
-      %table
+      %table#tns
         %tr#headers
           %th.tn TN
-          %th.dateRequested Due Date
+          %th.dateRequested Date Requested
           %th.dueDate Due Date
-          %th.target Target
           %th.requestType Request Type
-          %th.deviceType Device Type
-          %th.region Region
-          %th.priority Priority
-          %th.brand Brand
           %th.requestor Requestor
+          %th.location Location
+          %th.status Status
         - @tns.each do |t|
           - begin
             - due_date = Date.parse(t.due_date)
             - due_date = Date.civil(due_date.year + 2000, due_date.mon, due_date.day) if due_date.year < 2000
-            - if Date.today > due_date
-              %tr.row
-                %td.tn.late= t.tn
-                %td.dateRequested.late= t.date_requested
+            %tr.row
+              %td.tn= t.tn
+              %td.dateRequested= t.date_requested
+              - if Date.today > due_date
                 %td.dueDate.late= t.due_date
-                %td.target.late= t.target
-                %td.requestType.late= t.request_type
-                %td.deviceType.late= t.device_type
-                %td.region.late= t.region
-                %td.priority.late= t.priority
-                %td.brand.late= t.brand
-                %td.requestor.late= t.requestor
-            - else
-              %tr.row
-                %td.tn= t.tn
-                %td.dateRequested= t.date_requested
+              - else
                 %td.dueDate= t.due_date
-                %td.target= t.target
-                %td.requestType= t.request_type
-                %td.deviceType= t.device_type
-                %td.region= t.region
-                %td.priority= t.priority
-                %td.brand= t.brand
-                %td.requestor= t.requestor
+              %td.requestType= t.request_type
+              %td.requestor= t.requestor
+              %td.location= t.location
+              %td.status= t.status
           - rescue Exception
             %tr.row
               %td.tn= t.tn
               %td.dateRequested= t.date_requested
               %td.dueDate= t.due_date
-              %td.target= t.target
               %td.requestType= t.request_type
-              %td.deviceType= t.device_type
-              %td.region= t.region
-              %td.priority= t.priority
-              %td.brand= t.brand
               %td.requestor= t.requestor
+              %td.location= t.location
+              %td.status= t.status

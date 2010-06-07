@@ -1,0 +1,77 @@
+!!!
+%html
+  %head
+    %title Queue to Do
+    %link{:rel => 'stylesheet', :type => 'text/css', :href => '/stylesheet.css'}
+  %body
+    #content
+      %a{:href => '/'} Home
+      Edit
+      %a{:href => '/upload'} Upload File
+      %br/
+      %table#tns
+        %tr#headers
+          %th.tn TN
+          %th.dateRequested Date Requested
+          %th.dueDate Due Date
+          %th.requestType Request Type
+          %th.requestor Requestor
+          %th.location Location
+          %th.status Status
+        - @tns.each do |t|
+          - begin
+            - due_date = Date.parse(t.due_date)
+            - due_date = Date.civil(due_date.year + 2000, due_date.mon, due_date.day) if due_date.year < 2000
+          - rescue
+            - due_date = Date.parse("01/01/01")
+          %tr.row
+            %td.tn= t.tn
+            %td.dateRequested= t.date_requested
+            - if Date.today > due_date
+              %td.dueDate.late= t.due_date
+            - else
+              %td.dueDate= t.due_date
+            %td.requestType= t.request_type
+            %td.requestor= t.requestor
+            %td.location
+              %form{:action => "#{t.tn}/location", :method => "post"}
+                %select{:name => "location"}
+                  %option{:value => ""}
+                  - if t.location == "Bangalore"
+                    %option{:value => "Bangalore", :selected => "selected"} Bangalore
+                  - else
+                    %option{:value => "Bangalore"} Bangalore
+                  - if t.location == "Cypress"
+                    %option{:value => "Cypress", :selected => "selected"} Cypress
+                  - else
+                    %option{:value => "Cypress"} Cypress
+                %input{:type => "submit", :value => "Update"}
+            %td.status
+              %form{:action => "#{t.tn}/status", :method => "post"}
+                %select{:name => "status"}
+                  %option{:value => ""}
+                  - if t.status == "Capture"
+                    %option{:value => "Capture", :selected => "selected"} Capture
+                  - else
+                    %option{:value => "Capture"} Capture
+                  - if t.status == "ID"
+                    %option{:value => "ID", :selected => "selected"} ID
+                  - else
+                    %option{:value => "ID"} ID
+                  - if t.status == "QA"
+                    %option{:value => "QA", :selected => "selected"} QA
+                  - else
+                    %option{:value => "QA"} QA
+                  - if t.status == "Set"
+                    %option{:value => "Set", :selected => "selected"} Set
+                  - else
+                    %option{:value => "Set"} Set
+                  - if t.status == "Ready"
+                    %option{:value => "Ready", :selected => "selected"} Ready
+                  - else
+                    %option{:value => "Ready"} Ready
+                  - if t.status == "Complete"
+                    %option{:value => "Complete", :selected => "selected"} Complete
+                  - else
+                    %option{:value => "Complete"} Complete
+                %input{:type => "submit", :value => "Update"}

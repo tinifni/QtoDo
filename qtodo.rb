@@ -43,8 +43,8 @@ begin
       t.string :split_ids
       t.string :requestor_notified
       t.string :comments
-      t.string :tn_location
-      t.string :tn_status
+      t.string :location
+      t.string :status
     end
   end
 rescue ActiveRecord::StatementInvalid
@@ -56,6 +56,11 @@ end
 get '/' do
   @tns = Tn.all
   haml :index
+end
+
+get '/edit' do
+  @tns = Tn.all
+  haml :edit
 end
 
 get '/upload' do
@@ -114,6 +119,40 @@ post '/upload' do
                 :requestor_notified => tn["Requestor Notified (Y/N)"],
                 :comments => tn["Comment(s)"]})
     end
+  end
+  redirect '/'
+end
+
+get %r{/(\d{5})/location} do |c|
+  existing_tn = Tn.find(:first, :conditions => { :tn => c })
+  if existing_tn
+    "#{existing_tn.location}"
+  else
+    "Unkown"
+  end
+end
+
+post %r{/(\d{5})/location} do |c|
+  existing_tn = Tn.find(:first, :conditions => { :tn => c })
+  if existing_tn && params[:location]
+    Tn.update(existing_tn.id, :location => params[:location])
+  end
+  redirect '/'
+end
+
+get %r{/(\d{5})/status} do |c|
+  existing_tn = Tn.find(:first, :conditions => { :tn => c })
+  if existing_tn
+    "#{existing_tn.status}"
+  else
+    "Unkown"
+  end
+end
+
+post %r{/(\d{5})/status} do |c|
+  existing_tn = Tn.find(:first, :conditions => { :tn => c })
+  if existing_tn && params[:status]
+    Tn.update(existing_tn.id, :status => params[:status])
   end
   redirect '/'
 end
