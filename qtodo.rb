@@ -3,8 +3,10 @@ require 'active_record'
 require 'sinatra'
 require 'csv'
 require 'sass'
+require 'haml'
 require 'compass'
-require 'sinatra/reloader' if development?
+#load 'config/settings.rb'
+#require 'sinatra/reloader' if development?
 
 
 configure do
@@ -18,7 +20,7 @@ configure do
 end
 
 ActiveRecord::Base.establish_connection(
-  :adapter =>  'sqlite3',
+  :adapter => 'sqlite3',
   :database => 'qtodo.sqlite3.db'
 )
 
@@ -26,8 +28,8 @@ begin
   ActiveRecord::Schema.define do
     create_table :tns do |t|
       t.string :region
-      t.string :date_requested
-      t.string :due_date
+      t.date :date_requested
+      t.date :due_date
       t.string :bl
       t.string :requestor
       t.string :request_type
@@ -54,13 +56,23 @@ class Tn < ActiveRecord::Base
 end
 
 get '/' do
-  @tns = Tn.all
+	@tns = Tn.find(:all, :conditions => "status IS NOT 'Complete'", :order => "due_date, tn")
   haml :index
 end
 
-get '/edit' do
-  @tns = Tn.all
+get '/tns/edit' do
+  @tns = Tn.find(:all, :order => "due_date, tn")
   haml :edit
+end
+
+get %r{/tns/status/(\w*)} do |c|
+	@tns = Tn.find(:all, :conditions => "status IS '#{c}'", :order => "tn")
+	haml :status
+end
+
+get %r{/tns/location/(\w*)} do |c|
+	@tns = Tn.find(:all, :conditions => "location IS '#{c}'", :order => "tn")
+	haml :location
 end
 
 get '/upload' do
@@ -78,6 +90,8 @@ post '/upload' do
   string_data = csv_data.map {|row| row.map {|cell| cell.to_s } }
   array_of_hashes = string_data.map {|row| Hash[*headers.zip(row).flatten] }
   array_of_hashes.each do |tn|
+		tn["Date Requested"].length == 8 ? tn["Date Requested"].insert(6, '20') : nil
+		tn["Due Date"].length == 8 ? tn["Due Date"].insert(6, '20') : tn["Due Date"] = "01/01/9999"
     existing_tn = Tn.find(:first, :conditions => { :tn => tn["TN"] })
     unless existing_tn
       Tn.create(:region => tn["Region"],
@@ -123,7 +137,7 @@ post '/upload' do
   redirect '/'
 end
 
-get %r{/(\d{5})/location} do |c|
+get %r{/tns/(\d{5})/location} do |c|
   existing_tn = Tn.find(:first, :conditions => { :tn => c })
   if existing_tn
     "#{existing_tn.location}"
@@ -132,7 +146,7 @@ get %r{/(\d{5})/location} do |c|
   end
 end
 
-post %r{/(\d{5})/location} do |c|
+post %r{/tns/(\d{5})/location} do |c|
   existing_tn = Tn.find(:first, :conditions => { :tn => c })
   if existing_tn && params[:location]
     Tn.update(existing_tn.id, :location => params[:location])
@@ -140,7 +154,7 @@ post %r{/(\d{5})/location} do |c|
   redirect '/'
 end
 
-get %r{/(\d{5})/status} do |c|
+get %r{/tns/(\d{5})/status} do |c|
   existing_tn = Tn.find(:first, :conditions => { :tn => c })
   if existing_tn
     "#{existing_tn.status}"
@@ -149,10 +163,27 @@ get %r{/(\d{5})/status} do |c|
   end
 end
 
-post %r{/(\d{5})/status} do |c|
+post %r{/tns/(\d{5})/status} do |c|
   existing_tn = Tn.find(:first, :conditions => { :tn => c })
   if existing_tn && params[:status]
     Tn.update(existing_tn.id, :status => params[:status])
+  end
+  redirect '/'
+end
+
+get %r{/tns/(\d{5})} do |c|
+  existing_tn = Tn.find(:first, :conditions => { :tn => c })
+  if existing_tn
+    "#{existing_tn.location} #{existing_tn.status}"
+  else
+    "Unkown"
+  end
+end
+
+post %r{/tns/(\d{5})} do |c|
+  existing_tn = Tn.find(:first, :conditions => { :tn => c })
+  if existing_tn && params[:location] && params[:status]
+    Tn.update(existing_tn.id, :location => params[:location], :status => params[:status])
   end
   redirect '/'
 end

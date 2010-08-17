@@ -7,6 +7,7 @@
     #content
       %a{:href => '/'} Home
       Edit
+      %a{:href => '/tns/status/Complete'} Completed
       %a{:href => '/upload'} Upload File
       %br/
       %table#tns
@@ -18,23 +19,22 @@
           %th.requestor Requestor
           %th.location Location
           %th.status Status
+          %th.update
         - @tns.each do |t|
-          - begin
-            - due_date = Date.parse(t.due_date)
-            - due_date = Date.civil(due_date.year + 2000, due_date.mon, due_date.day) if due_date.year < 2000
-          - rescue
-            - due_date = Date.parse("01/01/01")
           %tr.row
             %td.tn= t.tn
             %td.dateRequested= t.date_requested
-            - if Date.today > due_date
-              %td.dueDate.late= t.due_date
+            - unless t.due_date.nil?
+              - if Date.today > t.due_date
+                %td.dueDate.late= t.due_date
+              - else
+                %td.dueDate= t.due_date
             - else
               %td.dueDate= t.due_date
             %td.requestType= t.request_type
             %td.requestor= t.requestor
-            %td.location
-              %form{:action => "#{t.tn}/location", :method => "post"}
+            %form{:action => "tns/#{t.tn}", :method => "post"}
+              %td.location
                 %select{:name => "location"}
                   %option{:value => ""}
                   - if t.location == "Bangalore"
@@ -45,11 +45,13 @@
                     %option{:value => "Cypress", :selected => "selected"} Cypress
                   - else
                     %option{:value => "Cypress"} Cypress
-                %input{:type => "submit", :value => "Update"}
-            %td.status
-              %form{:action => "#{t.tn}/status", :method => "post"}
+              %td.status
                 %select{:name => "status"}
                   %option{:value => ""}
+                  - if t.status == "Repair"
+                    %option{:value => "Repair", :selected => "selected"} Repair
+                  - else
+                    %option{:value => "Repair"} Repair
                   - if t.status == "Capture"
                     %option{:value => "Capture", :selected => "selected"} Capture
                   - else
@@ -62,6 +64,10 @@
                     %option{:value => "QA", :selected => "selected"} QA
                   - else
                     %option{:value => "QA"} QA
+                  - if t.status == "Exec"
+                    %option{:value => "Exec", :selected => "selected"} Exec
+                  - else
+                    %option{:value => "Exec"} Exec
                   - if t.status == "Set"
                     %option{:value => "Set", :selected => "selected"} Set
                   - else
@@ -74,4 +80,5 @@
                     %option{:value => "Complete", :selected => "selected"} Complete
                   - else
                     %option{:value => "Complete"} Complete
+              %td.update
                 %input{:type => "submit", :value => "Update"}
