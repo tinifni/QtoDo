@@ -1,3 +1,4 @@
+$complete: gray
 $late: red
 
 table
@@ -12,25 +13,35 @@ tr
 #content
   margin: auto
   width: 950px
+  font-family: helvetica
+#flash
+  margin: auto
+  width: 300px
+  text-align: center
+  visibility: hidden
+.complete
+  font-style: italic
+  color: $complete
 .late
   color: $late
 .tn
-  min-width: 50px
+  min-width: 60px
+  max-width: 60px
   text-align: center
 .id
   max-width: 85px
   text-align: center
 .dateRequested
   text-align: center
-  min-width: 85px
-  max-width: 85px
+  min-width: 95px
+  max-width: 95px
 .dueDate
   text-align: center
-  min-width: 85px
-  max-width: 85px
+  min-width: 95px
+  max-width: 95px
 .requestType
   text-align: center
-  max-width: 50px
+  max-width: 60px
 .deviceType
   max-width: 300px
 .priority

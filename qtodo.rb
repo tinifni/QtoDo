@@ -67,7 +67,11 @@ end
 
 get %r{/tns/status/(\w*)} do |c|
 	@tns = Tn.find(:all, :conditions => "status IS '#{c}'", :order => "tn")
-	haml :status
+	if c == "Complete"
+		haml :status_complete
+	else
+		haml :status
+	end
 end
 
 get %r{/tns/location/(\w*)} do |c|
@@ -142,7 +146,7 @@ get %r{/tns/(\d{5})/location} do |c|
   if existing_tn
     "#{existing_tn.location}"
   else
-    "Unkown"
+    "Unknown"
   end
 end
 
@@ -159,7 +163,7 @@ get %r{/tns/(\d{5})/status} do |c|
   if existing_tn
     "#{existing_tn.status}"
   else
-    "Unkown"
+    "Unknown"
   end
 end
 
@@ -176,7 +180,7 @@ get %r{/tns/(\d{5})} do |c|
   if existing_tn
     "#{existing_tn.location} #{existing_tn.status}"
   else
-    "Unkown"
+    "Unknown"
   end
 end
 

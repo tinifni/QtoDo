@@ -3,8 +3,11 @@
   %head
     %title Queue to Do
     %link{:rel => 'stylesheet', :type => 'text/css', :href => '/stylesheet.css'}
+    %script{:type => "text/javascript", :src => "http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"}
+    %script{:type => 'text/javascript', :src => '/q.js'}
   %body
     #content
+      #flash &nbsp;
       Home
       %a{:href => '/tns/edit'} Edit
       %a{:href => '/tns/status/Complete'} Completed
@@ -20,7 +23,7 @@
           %th.location Location
           %th.status Status
         - @tns.each do |t|
-          %tr.row
+          %tr.row{:id => "#{t.tn}"}
             %td.tn= t.tn
             %td.dateRequested= t.date_requested
             - unless t.due_date.nil?

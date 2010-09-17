@@ -3,8 +3,11 @@
   %head
     %title Queue to Do
     %link{:rel => 'stylesheet', :type => 'text/css', :href => '/stylesheet.css'}
+    %script{:type => "text/javascript", :src => "http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"}
+    %script{:type => 'text/javascript', :src => '/edit.js'}
   %body
     #content
+      #flash &nbsp;
       %a{:href => '/'} Home
       Edit
       %a{:href => '/tns/status/Complete'} Completed
@@ -19,66 +22,124 @@
           %th.requestor Requestor
           %th.location Location
           %th.status Status
-          %th.update
         - @tns.each do |t|
-          %tr.row
-            %td.tn= t.tn
-            %td.dateRequested= t.date_requested
-            - unless t.due_date.nil?
-              - if Date.today > t.due_date
-                %td.dueDate.late= t.due_date
+          - if t.status == "Complete"
+            %tr.row.complete{:id => "#{t.tn}"}
+              %td.tn= t.tn
+              %td.dateRequested= t.date_requested
+              - unless t.due_date.nil?
+                - if Date.today > t.due_date && t.status != "Complete"
+                  %td.dueDate.late= t.due_date
+                - else
+                  %td.dueDate= t.due_date
               - else
                 %td.dueDate= t.due_date
-            - else
-              %td.dueDate= t.due_date
-            %td.requestType= t.request_type
-            %td.requestor= t.requestor
-            %form{:action => "tns/#{t.tn}", :method => "post"}
-              %td.location
-                %select{:name => "location"}
-                  %option{:value => ""}
-                  - if t.location == "Bangalore"
-                    %option{:value => "Bangalore", :selected => "selected"} Bangalore
-                  - else
-                    %option{:value => "Bangalore"} Bangalore
-                  - if t.location == "Cypress"
-                    %option{:value => "Cypress", :selected => "selected"} Cypress
-                  - else
-                    %option{:value => "Cypress"} Cypress
-              %td.status
-                %select{:name => "status"}
-                  %option{:value => ""}
-                  - if t.status == "Repair"
-                    %option{:value => "Repair", :selected => "selected"} Repair
-                  - else
-                    %option{:value => "Repair"} Repair
-                  - if t.status == "Capture"
-                    %option{:value => "Capture", :selected => "selected"} Capture
-                  - else
-                    %option{:value => "Capture"} Capture
-                  - if t.status == "ID"
-                    %option{:value => "ID", :selected => "selected"} ID
-                  - else
-                    %option{:value => "ID"} ID
-                  - if t.status == "QA"
-                    %option{:value => "QA", :selected => "selected"} QA
-                  - else
-                    %option{:value => "QA"} QA
-                  - if t.status == "Exec"
-                    %option{:value => "Exec", :selected => "selected"} Exec
-                  - else
-                    %option{:value => "Exec"} Exec
-                  - if t.status == "Set"
-                    %option{:value => "Set", :selected => "selected"} Set
-                  - else
-                    %option{:value => "Set"} Set
-                  - if t.status == "Ready"
-                    %option{:value => "Ready", :selected => "selected"} Ready
-                  - else
-                    %option{:value => "Ready"} Ready
-                  - if t.status == "Complete"
-                    %option{:value => "Complete", :selected => "selected"} Complete
-                  - else
-                    %option{:value => "Complete"} Complete
-              %td.update
-                %input{:type => "submit", :value => "Update"}
+              %td.requestType= t.request_type
+              %td.requestor= t.requestor
+              %form{:action => "tns/#{t.tn}", :method => "post"}
+                %td.location
+                  %select{:name => "location"}
+                    %option{:value => ""}
+                    - if t.location == "Bangalore"
+                      %option{:value => "Bangalore", :selected => "selected"} Bangalore
+                    - else
+                      %option{:value => "Bangalore"} Bangalore
+                    - if t.location == "Cypress"
+                      %option{:value => "Cypress", :selected => "selected"} Cypress
+                    - else
+                      %option{:value => "Cypress"} Cypress
+                %td.status
+                  %select{:name => "status"}
+                    %option{:value => ""}
+                    - if t.status == "Repair"
+                      %option{:value => "Repair", :selected => "selected"} Repair
+                    - else
+                      %option{:value => "Repair"} Repair
+                    - if t.status == "Capture"
+                      %option{:value => "Capture", :selected => "selected"} Capture
+                    - else
+                      %option{:value => "Capture"} Capture
+                    - if t.status == "ID"
+                      %option{:value => "ID", :selected => "selected"} ID
+                    - else
+                      %option{:value => "ID"} ID
+                    - if t.status == "QA"
+                      %option{:value => "QA", :selected => "selected"} QA
+                    - else
+                      %option{:value => "QA"} QA
+                    - if t.status == "Exec"
+                      %option{:value => "Exec", :selected => "selected"} Exec
+                    - else
+                      %option{:value => "Exec"} Exec
+                    - if t.status == "Set"
+                      %option{:value => "Set", :selected => "selected"} Set
+                    - else
+                      %option{:value => "Set"} Set
+                    - if t.status == "Ready"
+                      %option{:value => "Ready", :selected => "selected"} Ready
+                    - else
+                      %option{:value => "Ready"} Ready
+                    - if t.status == "Complete"
+                      %option{:value => "Complete", :selected => "selected"} Complete
+                    - else
+                      %option{:value => "Complete"} Complete
+          - else
+            %tr.row{:id => "#{t.tn}"}
+              %td.tn= t.tn
+              %td.dateRequested= t.date_requested
+              - unless t.due_date.nil?
+                - if Date.today > t.due_date && t.status != "Complete"
+                  %td.dueDate.late= t.due_date
+                - else
+                  %td.dueDate= t.due_date
+              - else
+                %td.dueDate= t.due_date
+              %td.requestType= t.request_type
+              %td.requestor= t.requestor
+              %form{:action => "tns/#{t.tn}", :method => "post"}
+                %td.location
+                  %select{:name => "location"}
+                    %option{:value => ""}
+                    - if t.location == "Bangalore"
+                      %option{:value => "Bangalore", :selected => "selected"} Bangalore
+                    - else
+                      %option{:value => "Bangalore"} Bangalore
+                    - if t.location == "Cypress"
+                      %option{:value => "Cypress", :selected => "selected"} Cypress
+                    - else
+                      %option{:value => "Cypress"} Cypress
+                %td.status
+                  %select{:name => "status"}
+                    %option{:value => ""}
+                    - if t.status == "Repair"
+                      %option{:value => "Repair", :selected => "selected"} Repair
+                    - else
+                      %option{:value => "Repair"} Repair
+                    - if t.status == "Capture"
+                      %option{:value => "Capture", :selected => "selected"} Capture
+                    - else
+                      %option{:value => "Capture"} Capture
+                    - if t.status == "ID"
+                      %option{:value => "ID", :selected => "selected"} ID
+                    - else
+                      %option{:value => "ID"} ID
+                    - if t.status == "QA"
+                      %option{:value => "QA", :selected => "selected"} QA
+                    - else
+                      %option{:value => "QA"} QA
+                    - if t.status == "Exec"
+                      %option{:value => "Exec", :selected => "selected"} Exec
+                    - else
+                      %option{:value => "Exec"} Exec
+                    - if t.status == "Set"
+                      %option{:value => "Set", :selected => "selected"} Set
+                    - else
+                      %option{:value => "Set"} Set
+                    - if t.status == "Ready"
+                      %option{:value => "Ready", :selected => "selected"} Ready
+                    - else
+                      %option{:value => "Ready"} Ready
+                    - if t.status == "Complete"
+                      %option{:value => "Complete", :selected => "selected"} Complete
+                    - else
+                      %option{:value => "Complete"} Complete
