@@ -5,9 +5,11 @@ require 'csv'
 require 'sass'
 require 'haml'
 require 'compass'
-#load 'config/settings.rb'
-#require 'sinatra/reloader' if development?
+require 'sinatra/reloader' if development?
 
+#enable :run
+#set :views, File.dirname(__FILE__) + "/views"
+#set :public, File.dirname(__FILE__) + "/public"
 
 configure do
   Compass.configuration do |config|
@@ -60,9 +62,9 @@ get '/' do
   haml :index
 end
 
-get '/tns/edit' do
+get '/tns' do
   @tns = Tn.find(:all, :order => "due_date, tn")
-  haml :edit
+  haml :tns
 end
 
 get %r{/tns/status/(\w*)} do |c|

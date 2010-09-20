@@ -7,18 +7,21 @@
     %script{:type => 'text/javascript', :src => '/q.js'}
   %body
     #content
-      #flash &nbsp;
-      Home
-      %a{:href => '/tns/edit'} Edit
-      %a{:href => '/tns/status/Complete'} Completed
-      %a{:href => '/upload'} Upload File
       %br/
+      %br/
+      #menu_float
+        #menu
+          Home
+          %a{:href => '/tns'} All
+          %a{:href => '/tns/status/Complete'} Completed
+          %a{:href => '/upload'} Upload File
+        #flash &nbsp;
       %table#tns
         %tr#headers
           %th.tn TN
-          %th.dateRequested Date Requested
-          %th.dueDate Due Date
-          %th.requestType Request Type
+          %th.dateRequested Requested
+          %th.dueDate Due
+          %th.requestType Type
           %th.requestor Requestor
           %th.location Location
           %th.status Status

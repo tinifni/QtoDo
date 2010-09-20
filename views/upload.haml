@@ -3,14 +3,19 @@
   %head
     %title Queue to Do
     %link{:rel => 'stylesheet', :type => 'text/css', :href => '/stylesheet.css'}
+    %script{:type => "text/javascript", :src => "http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"}
+    %script{:type => 'text/javascript', :src => '/q.js'}
   %body
     #content
-      #flash &nbsp;
-      %a{:href => '/'} Home
-      %a{:href => '/tns/edit'} Edit
-      %a{:href => '/tns/status/Complete'} Completed
-      Upload File
       %br/
+      %br/
+      #menu_float
+        #menu
+          %a{:href => '/'} Home
+          %a{:href => '/tns'} All
+          %a{:href => '/tns/status/Complete'} Completed
+          Upload File
+        #flash &nbsp;
       %form{:action => "/upload", :method => "post", :enctype => "multipart/form-data"}
         %input{:type => "file", :name => "file"}
         %input{:type => "submit", :value => "Bang!"}
