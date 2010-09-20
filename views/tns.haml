@@ -17,14 +17,14 @@
           %a{:href => '/upload'} Upload File
         #flash &nbsp;
       %table#tns
-        %tr#headers
-          %th.tn TN
-          %th.dateRequested Requested
-          %th.dueDate Due
-          %th.requestType Type
-          %th.requestor Requestor
-          %th.location Location
-          %th.status Status
+        %tr.headers
+          %th TN
+          %th Requested
+          %th Due
+          %th Type
+          %th Requestor
+          %th Location
+          %th Status
         - @tns.each do |t|
           - if t.status == "Complete"
             %tr.row.complete{:id => "#{t.tn}"}

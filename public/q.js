@@ -1,5 +1,5 @@
 (function($){
-	$(document).ready(function() {
+  $(document).ready(function() {
     function locationBox(){
       $(".location").click(function(){
         var loc = $(this).text();
@@ -22,7 +22,7 @@
       });
     }
 
-		function statusBox(){
+    function statusBox(){
       $(".status").click(function(){
         var stat = $(this).text();
         var tn = $(this).parent().attr("id");
@@ -48,7 +48,7 @@
     locationBox();
 
     $("#flash").hide();
-		$("#flash").click(function(){$("#flash").hide()});
+    $("#flash").click(function(){$("#flash").hide()});
 
     $(window).scroll(function(){$("#menu_float").animate({top:$(window).scrollTop()+"px"},{queue:false,duration:0})});
 
@@ -83,5 +83,5 @@
     }
 
     function locationReturn(loc){return $("<td>").attr({ "class" : "location" }).text(loc);}
-	});
+  });
 })(jQuery);
