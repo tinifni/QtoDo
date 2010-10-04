@@ -5,7 +5,7 @@ require 'csv'
 require 'sass'
 require 'haml'
 require 'compass'
-require 'sinatra/reloader' if development?
+#require 'sinatra/reloader' if development?
 
 #enable :run
 #set :views, File.dirname(__FILE__) + "/views"
