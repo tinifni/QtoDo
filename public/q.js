@@ -64,7 +64,7 @@
           .append($("<option>").attr({ "value" : "QA" }).text("QA"))
           .append($("<option>").attr({ "value" : "Exec" }).text("Exec"))
           .append($("<option>").attr({ "value" : "Set" }).text("Set"))
-          .append($("<option>").attr({ "value" : "Ready" }).text("Ready"))
+          .append($("<option>").attr({ "value" : "Compliment" }).text("Compliment"))
           .append($("<option>").attr({ "value" : "Complete" }).text("Complete"))
         );
     }
