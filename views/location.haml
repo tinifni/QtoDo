@@ -3,43 +3,38 @@
   %head
     %title Queue to Do
     %link{:rel => 'stylesheet', :type => 'text/css', :href => '/stylesheet.css'}
+    %script{:type => "text/javascript", :src => "http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"}
+    %script{:type => 'text/javascript', :src => '/q.js'}
   %body
     #content
-      %a{:href => '/'} Home
-      %a{:href => '/tns/edit'} Edit
-      %a{:href => '/tns/status/Complete'} Completed
-      %a{:href => '/upload'} Upload File
       %br/
+      %br/
+      #menu_float
+        #menu
+          %a{:href => '/'} Home
+          %a{:href => '/tns'} All
+          %a{:href => '/tns/status/Complete'} Completed
+          %a{:href => '/upload'} Upload File
+        #flash &nbsp;
       %table#tns
         %tr#headers
-          %th.tn TN
-          %th.dateRequested Date Requested
-          %th.dueDate Due Date
-          %th.requestType Request Type
-          %th.requestor Requestor
-          %th.location Location
-          %th.status Status
+          %th TN
+          %th Due
+          %th Type
+          %th Requestor
+          %th Location
+          %th Status
         - @tns.each do |t|
-          - begin
-            - due_date = Date.parse(t.due_date)
-            - due_date = Date.civil(due_date.year + 2000, due_date.mon, due_date.day) if due_date.year < 2000
-            %tr.row
-              %td.tn= t.tn
-              %td.dateRequested= t.date_requested
-              - if Date.today > due_date
+          %tr.row{:id => "#{t.tn}"}
+            %td.tn= t.tn
+            - unless t.due_date.nil?
+              - if Date.today > t.due_date
                 %td.dueDate.late= t.due_date
               - else
                 %td.dueDate= t.due_date
-              %td.requestType= t.request_type
-              %td.requestor= t.requestor
-              %td.location= t.location
-              %td.status= t.status
-          - rescue Exception
-            %tr.row
-              %td.tn= t.tn
-              %td.dateRequested= t.date_requested
+            - else
               %td.dueDate= t.due_date
-              %td.requestType= t.request_type
-              %td.requestor= t.requestor
-              %td.location= t.location
-              %td.status= t.status
+            %td.requestType= t.request_type
+            %td.requestor= t.requestor
+            %td.location= t.location
+            %td.status= t.status

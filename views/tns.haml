@@ -19,7 +19,6 @@
       %table#tns
         %tr.headers
           %th TN
-          %th Requested
           %th Due
           %th Type
           %th Requestor
@@ -29,7 +28,6 @@
           - if t.status == "Complete"
             %tr.row.complete{:id => "#{t.tn}"}
               %td.tn= t.tn
-              %td.dateRequested= t.date_requested
               - unless t.due_date.nil?
                 - if Date.today > t.due_date && t.status != "Complete"
                   %td.dueDate.late= t.due_date
@@ -44,7 +42,6 @@
           - else
             %tr.row{:id => "#{t.tn}"}
               %td.tn= t.tn
-              %td.dateRequested= t.date_requested
               - unless t.due_date.nil?
                 - if Date.today > t.due_date && t.status != "Complete"
                   %td.dueDate.late= t.due_date
