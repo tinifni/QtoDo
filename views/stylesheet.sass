@@ -1,6 +1,8 @@
 $complete: gray
 $late: red
 
+body
+  font-family: helvetica
 table
   border-collapse: collapse
 td
@@ -10,24 +12,35 @@ tr
   height: 25px
 #content
   margin: auto
+  margin-top: 60px
   width: 853px
-  font-family: helvetica
-#menu_float
+#menu_stuff
+  left: 0
+  position: fixed
+  top: 0
+  width: 100%
+  z-index: 10
+#menu_outer
+  display: block
+  height: 40px
+  position: relative
+  text-align: center
+  width: 100%
+#menu_bg
+  -moz-box-shadow: 0 1px 2px rgba(0,0,0,0.5)
+  background: none repeat scroll 0 0 #cccccc
+  height: 100%
+  left: 0
   position: absolute
   top: 0
-  left: 0
-  font-family: helvetica
-  z-index: 10
-  padding: 5px
-  background: #cccccc
-  text-align: center
-  font-weight: bold
-  width: 99%
+  width: 100%
 #menu
-  padding: 3px
+  padding: 8px
+  display: block
+  font-weight: bold
 #flash
   padding-top: 4px
-  padding-bottom: 2px
+  padding-bottom: 4px
   margin: auto
   width: 300px
   font-weight: normal

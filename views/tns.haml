@@ -6,16 +6,16 @@
     %script{:type => "text/javascript", :src => "http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"}
     %script{:type => 'text/javascript', :src => '/q.js'}
   %body
+    #menu_stuff
+      #menu_outer
+        #menu_bg
+          #menu
+            %a{:href => '/'} Home
+            All
+            %a{:href => '/tns/status/Complete'} Completed
+            %a{:href => '/upload'} Upload File
+          #flash &nbsp;
     #content
-      %br/
-      %br/
-      #menu_float
-        #menu
-          %a{:href => '/'} Home
-          All
-          %a{:href => '/tns/status/Complete'} Completed
-          %a{:href => '/upload'} Upload File
-        #flash &nbsp;
       %table#tns
         %tr.headers
           %th TN
