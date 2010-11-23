@@ -28,7 +28,7 @@
           %th Location
           %th Status
         - @tns.each do |t|
-          %tr.row{:id => "#{t.tn}"}
+          %tr.row{:id => "#{t.id}", :data => {:tn => "#{t.tn}"}}
             %td.tn= t.tn
             - unless t.due_date.nil?
               - if Date.today > t.due_date

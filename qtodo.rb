@@ -160,6 +160,14 @@ post %r{/tns/(\d{5})/location} do |c|
   redirect '/'
 end
 
+post %r{/tns/id/(\d+)/location} do |c|
+  existing_tn = Tn.find(:first, :conditions => { :id => c })
+  if existing_tn && params[:location]
+    Tn.update(existing_tn.id, :location => params[:location])
+  end
+  redirect '/'
+end
+
 get %r{/tns/(\d{5})/status} do |c|
   existing_tn = Tn.find(:first, :conditions => { :tn => c })
   if existing_tn
@@ -171,6 +179,14 @@ end
 
 post %r{/tns/(\d{5})/status} do |c|
   existing_tn = Tn.find(:first, :conditions => { :tn => c })
+  if existing_tn && params[:status]
+    Tn.update(existing_tn.id, :status => params[:status])
+  end
+  redirect '/'
+end
+
+post %r{/tns/id/(\d+)/status} do |c|
+  existing_tn = Tn.find(:first, :conditions => { :id => c })
   if existing_tn && params[:status]
     Tn.update(existing_tn.id, :status => params[:status])
   end

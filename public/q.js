@@ -3,15 +3,16 @@
     function locationBox(){
       $(".location").click(function(){
         var loc = $(this).text();
-        var tn = $(this).parent().attr("id");
-        $(this).replaceWith(selectLocation(tn));
-        $("#location" + tn + " option[value='" + loc + "']").attr("selected", "selected");
+        var id = $(this).parent().attr("id");
+        $(this).replaceWith(selectLocation(id));
+        $("#location" + id + " option[value='" + loc + "']").attr("selected", "selected");
 
-        $("#location" + tn).change(function(){
+        $("#location" + id).change(function(){
           var loc = this.value;
-          var tn = $(this).parent().parent().attr("id");
+          var id = $(this).parent().parent().attr("id");
+          var tn = $(this).parent().parent().attr("data-tn");
           $(this).parent().replaceWith(locationReturn(loc));
-          $.post("/tns/" + tn + "/location", { location : loc }, function(){
+          $.post("/tns/id/" + id + "/location", { location : loc }, function(){
             $("#flash").css({"background":"#333333","color":"white"});
             $("#flash").show();
             $("#flash").text("TN" + tn + " updated location: " + loc);
@@ -25,15 +26,16 @@
     function statusBox(){
       $(".status").click(function(){
         var stat = $(this).text();
-        var tn = $(this).parent().attr("id");
-        $(this).replaceWith(selectStatus(tn));
-        $("#status" + tn + " option[value='" + stat + "']").attr("selected", "selected");
+        var id = $(this).parent().attr("id");
+        $(this).replaceWith(selectStatus(id));
+        $("#status" + id + " option[value='" + stat + "']").attr("selected", "selected");
 
-        $("#status" + tn).change(function(){
+        $("#status" + id).change(function(){
           var stat = this.value;
-          var tn = $(this).parent().parent().attr("id");
+          var id = $(this).parent().parent().attr("id");
+          var tn = $(this).parent().parent().attr("data-tn");
           $(this).parent().replaceWith(statusReturn(stat));
-          $.post("/tns/" + tn + "/status", { status : stat }, function(){
+          $.post("/tns/id/" + id + "/status", { status : stat }, function(){
             $("#flash").css({"background":"#333333","color":"white"});
             $("#flash").show();
             $("#flash").text("TN" + tn + " updated status: " + stat);
@@ -52,11 +54,11 @@
 
     $(window).scroll(function(){$("#menu_float").animate({top:$(window).scrollTop()+"px"},{queue:false,duration:0})});
 
-    function selectStatus(tn){
+    function selectStatus(id){
       return $("<td>")
         .attr({ "class" : "statusUpdate" })
         .append($("<select>")
-          .attr({ "id" : "status" + tn })
+          .attr({ "id" : "status" + id })
           .append($("<option>").attr({ "value" : "" }).text(""))
           .append($("<option>").attr({ "value" : "Repair" }).text("Repair"))
           .append($("<option>").attr({ "value" : "Capture" }).text("Capture"))
@@ -71,11 +73,11 @@
 
     function statusReturn(stat){return $("<td>").attr({ "class" : "status" }).text(stat);}
 
-    function selectLocation(tn){
+    function selectLocation(id){
       return $("<td>")
         .attr({ "class" : "locationUpdate" })
         .append($("<select>")
-          .attr({ "id" : "location" + tn })
+          .attr({ "id" : "location" + id })
           .append($("<option>").attr({ "value" : "" }).text(""))
           .append($("<option>").attr({ "value" : "Bangalore" }).text("Bangalore"))
           .append($("<option>").attr({ "value" : "Cypress" }).text("Cypress"))
