@@ -14,6 +14,9 @@
             %a{:href => '/tns'} All
             %a{:href => '/tns/status/Complete'} Completed
             Upload File
+          #search
+            %form{:method => 'get', :action => '/search'}
+              %input{:type => 'textarea', :name => 'q'}
           #flash &nbsp;
     #content
       %form{:action => "/upload", :method => "post", :enctype => "multipart/form-data"}

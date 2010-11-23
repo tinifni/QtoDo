@@ -194,6 +194,11 @@ post %r{/tns/(\d{5})} do |c|
   redirect '/'
 end
 
+get %r{/search} do
+	@tns = [Tn.find(:first, :conditions => {:tn => params[:q]})]
+  haml :search
+end
+
 get '/stylesheet.css' do
   content_type 'text/css', :charset => 'utf-8'
   sass :stylesheet
