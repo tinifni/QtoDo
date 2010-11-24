@@ -23,6 +23,51 @@
       });
     }
 
+    $("tr.row").hover(
+      function(){
+        var offset = $(this).offset();
+        var id = $(this).attr("id");
+        var tn = $(this).attr("data-tn");
+        var idUrl = "/tns/id/" + id;
+        $("<div id='delete" + id + "'></div>").css({
+              "background-image" : "url('/delete.png')",
+              "position": "absolute",
+              "height": "16px",
+              "width": "16px",
+              "margin-top": "3px"
+            }).offset({ top: offset.top + $(document).scrollTop(), left: offset.left - 16 })
+            .appendTo($(this)).hover(
+              function(){ $(this).css("background-position", "0 -16px")},
+              function(){ $(this).css("background-position", "0 0")}
+            ).click(function(){
+              $("<div></div>").appendTo($(this)).dialog({
+                resizable: false,
+                title: "Delete TN" + tn + "?",
+                height: 140,
+                modal: true,
+                buttons: {
+                  "Delete": function() {
+                    $("#" + id).hide();
+                    $.post("/tns/id/" + id + "/destroy", function(){
+                        $("#flash").css({"background":"#333333","color":"white"});
+                        $("#flash").show();
+                        $("#flash").text("TN" + tn + " has been deleted");
+                    });
+                    $(this).dialog("close");
+                  },
+                  Cancel: function() {
+                    $(this).dialog("close");
+                  }
+                }
+              });
+            });
+      },
+      function(){
+        var id = $(this).attr("id");
+        $("#delete" + id).remove();
+      }
+    );
+
     function statusBox(){
       $(".status").click(function(){
         var stat = $(this).text();

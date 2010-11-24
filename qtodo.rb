@@ -210,6 +210,14 @@ post %r{/tns/(\d{5})} do |c|
   redirect '/'
 end
 
+post %r{/tns/id/(\d+)/destroy} do |c|
+  existing_tn = Tn.find(:first, :conditions => { :id => c })
+  if existing_tn
+    Tn.delete(existing_tn.id)
+  end
+  redirect '/'
+end
+
 get %r{/search} do
 	@tns = [Tn.find(:first, :conditions => {:tn => params[:q]})]
   haml :search
