@@ -19,11 +19,14 @@
           });
 
           locationBox();
+          $("tr.row").trigger("mouseleave");
         });
+
+        $("tr.row").trigger("mouseleave");
       });
     }
 
-    $("tr.row").hover(
+    $("tr.row").mouseenter(
       function(){
         var offset = $(this).offset();
         var id = $(this).attr("id");
@@ -61,8 +64,7 @@
                 }
               });
             });
-      },
-      function(){
+      }).mouseleave(function(){
         var id = $(this).attr("id");
         $("#delete" + id).remove();
       }
@@ -87,7 +89,10 @@
           });
 
           statusBox();
+          $("tr.row").trigger("mouseleave");
         });
+
+        $("tr.row").trigger("mouseleave");
       });
     }
 
